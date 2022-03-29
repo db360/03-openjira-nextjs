@@ -1,8 +1,18 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
+import { CssBaseline, ThemeProvider } from '@mui/material'
+import { darkTheme, lightTheme } from '../themes'
+
+
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  return (
+    <ThemeProvider theme={darkTheme}>   {/*Wrap el componente con el tema*/}
+      <CssBaseline /> {/*Para que tomen efecto los cambios del theme*/}
+      <Component {...pageProps} />
+    </ThemeProvider>
+
+  )
 }
 
 export default MyApp
