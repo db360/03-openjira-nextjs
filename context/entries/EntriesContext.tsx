@@ -3,7 +3,11 @@ import { Entry } from '../../interfaces';
 
 
 interface ContextProps {
-     entries: Entry[]; 
+     entries: Entry[];
+
+     //Methods
+     addNewEntry:(description: string) => void;
+     updatedEntry:(entry: Entry) => void;
 }
 
 
