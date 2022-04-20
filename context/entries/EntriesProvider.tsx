@@ -22,7 +22,7 @@ const Entries_INITIAL_STATE: EntriesState = {
             _id: uuidv4(),
             description: 'En Progreso: Lorem Ipsum in pretium tempor invidunt ut labore et',
             status: 'pending',
-            createdAt: Date.now() - 1000000,
+            createdAt: Date.now() - 10000000,
         },
         {
             _id: uuidv4(),
