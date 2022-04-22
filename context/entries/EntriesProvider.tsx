@@ -11,26 +11,7 @@ export interface EntriesState {
 }
 
 const Entries_INITIAL_STATE: EntriesState = {
-     entries: [
-         {
-             _id: uuidv4(),
-             description: 'Pendiente: Lorem Ipsum in pretium tempor invidunt ut labore et que dice el tio',
-             status: 'in-progress',
-             createdAt: Date.now(),
-         },
-         {
-            _id: uuidv4(),
-            description: 'En Progreso: Lorem Ipsum in pretium tempor invidunt ut labore et',
-            status: 'pending',
-            createdAt: Date.now() - 10000000,
-        },
-        {
-            _id: uuidv4(),
-            description: 'Completadas: Lorem Ipsum in pretium tempor invidunt ut labore et d224 2dp,2pd,2 p2d,',
-            status: 'finished',
-            createdAt: Date.now() - 100000,
-        }
-     ],
+     entries: [],
 }
 
 export const EntriesProvider:FC = ({ children }) => {
