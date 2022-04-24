@@ -5,6 +5,8 @@ import { Entry } from '../../interfaces';
 type EntriesActionType =
    |{ type: '[Entry] - Add-Entry', payload: Entry } //En el reducer no se ejecutan codigos de terceros (no llamar uuid)
    |{ type: '[Entry] - Updated-Entry', payload: Entry }
+   |{ type: '[Entry] - Initial Entries Load', payload: Entry[] }
+
 
 export const entriesReducer = ( state: EntriesState, action: EntriesActionType ): EntriesState => {
    switch (action.type) {
@@ -24,6 +26,11 @@ export const entriesReducer = ( state: EntriesState, action: EntriesActionType )
                   return entry;
                })
      }
+     case '[Entry] - Initial Entries Load':
+        return {
+           ...state,
+           entries: [...action.payload]
+        }
 
       default:
           return state;
