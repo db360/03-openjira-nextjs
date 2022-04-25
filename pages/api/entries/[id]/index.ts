@@ -1,19 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import mongoose from "mongoose";
-import { db } from "../../../database";
-import { Entry, IEntry } from "../../../models";
+import { db } from "../../../../database";
+import { Entry, IEntry } from "../../../../models";
 
 type Data = { message: string } | IEntry;
 
-export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
-) {
-  const { id } = req.query; // siempre son strings en las req
+export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
 
-  if (!mongoose.isValidObjectId(id)) {
-    return res.status(400).json({ message: `Id ${id} no es válido` });
-  }
+  // const { id } = req.query; // siempre son strings en las req
+
+  // if (!mongoose.isValidObjectId(id)) {
+  //   return res.status(400).json({ message: `Id ${id} no es válido` });
+  // }
 
   switch (req.method) {
     case "PUT":
@@ -36,7 +33,7 @@ const getEntry = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!entryToGet) {
     return res
       .status(400)
-      .json({ message: "No existe una entrada con la ID deseada" });
+      .json({ message: `No existe una entrada con la ID deseada -> (${id})` });
   }
 
   return res.status(200).json(entryToGet);
