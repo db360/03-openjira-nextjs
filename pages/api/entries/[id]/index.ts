@@ -17,11 +17,26 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
       return updateEntry(req, res);
     case "GET":
       return getEntry(req, res);
+    case "DELETE":
+      return getEntry(req, res);
     default:
       return res
         .status(400)
         .json({ message: `El Método de la peticion es Incorrecto` });
   }
+}
+
+const deleteEntry = async(req:NextApiRequest, res:NextApiResponse) => {
+  const { id } = req.query;
+  await db.connect();
+  const entryToDelete = await Entry.findByIdAndDelete(id);
+  await db.disconnect();
+
+  if(!entryToDelete) {
+    return res.status(400).json({ message: `Ninguna entrada con la id: (${id})`})
+  }
+
+  return res.status(200).json(entryToDelete);
 }
 
 const getEntry = async (req: NextApiRequest, res: NextApiResponse) => {

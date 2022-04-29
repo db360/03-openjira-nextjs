@@ -5,6 +5,7 @@ import { Entry } from '../../interfaces';
 type EntriesActionType =
    |{ type: '[Entry] - Add-Entry', payload: Entry } //En el reducer no se ejecutan codigos de terceros (no llamar uuid)
    |{ type: '[Entry] - Updated-Entry', payload: Entry }
+   |{ type: '[Entry] - Delete-Entry', payload: Entry }
    |{ type: '[Entry] - Initial Entries Load', payload: Entry[] }
 
 
@@ -31,6 +32,11 @@ export const entriesReducer = ( state: EntriesState, action: EntriesActionType )
            ...state,
            entries: [...action.payload]
         }
+        case '[Entry] - Delete-Entry':
+         return {
+              ...state,
+              entries: state.entries.filter(entry => entry._id !== action.payload._id)
+    }
 
       default:
           return state;

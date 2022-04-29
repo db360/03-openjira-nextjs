@@ -1,6 +1,8 @@
 import { FC, useEffect, useReducer } from 'react';
 import { entriesAPI } from '../../apis';
 
+import { useSnackbar } from 'notistack';
+
 import { Entry } from '../../interfaces';
 
 import {EntriesContext, entriesReducer} from './'
@@ -16,7 +18,8 @@ const Entries_INITIAL_STATE: EntriesState = {
 
 export const EntriesProvider:FC = ({ children }) => {
 
-     const [state, dispatch] = useReducer(entriesReducer, Entries_INITIAL_STATE)
+     const [state, dispatch] = useReducer(entriesReducer, Entries_INITIAL_STATE);
+     const { enqueueSnackbar } = useSnackbar();
 
      const addNewEntry = async( description: string ) => {
           // const newEntry:Entry = {
@@ -30,10 +33,52 @@ export const EntriesProvider:FC = ({ children }) => {
 
      }
 
-     const updatedEntry = async( {_id, description, status}: Entry ) => {
+     const deleteEntry = async(entry: Entry, showSnackbar = false) => {
+          try {
+               const {data } = await entriesAPI.delete<Entry>(`/entries/${ entry._id}`)
+               dispatch({ type: '[Entry] - Delete-Entry', payload: data})
+
+               if(showSnackbar) {
+                    enqueueSnackbar('Entrada Borrada Correctamente', {
+                         variant: 'success',
+                         autoHideDuration: 1500,
+                         anchorOrigin: {
+                              vertical: 'top',
+                              horizontal: 'right'
+                         }
+                    })
+               }
+          } catch (error) {
+               console.error(error)
+               if(showSnackbar) {
+                    enqueueSnackbar(`Error -> (${error})`, {
+                         variant: 'error',
+                         autoHideDuration: 1500,
+                         anchorOrigin: {
+                              vertical: 'top',
+                              horizontal: 'right'
+                         }
+                    })
+               }
+          }
+     }
+
+     const updatedEntry = async( {_id, description, status}: Entry, showSnackbar = false ) => {
           try {
                const {data} = await entriesAPI.put<Entry>(`/entries/${_id}`, {description, status})
                dispatch({ type: '[Entry] - Updated-Entry', payload: data})
+
+               if ( showSnackbar ) {
+                    enqueueSnackbar('Entrada Actualizada', {
+                         variant: 'success',
+                         autoHideDuration: 1500,
+                         anchorOrigin: {
+                              vertical: 'top',
+                              horizontal: 'right'
+                         }
+                    })
+               }
+
 
           } catch (error) {
                console.log({error})
@@ -54,6 +99,7 @@ export const EntriesProvider:FC = ({ children }) => {
                ...state,
                addNewEntry,
                updatedEntry,
+               deleteEntry
 
           }}>
                {children}
